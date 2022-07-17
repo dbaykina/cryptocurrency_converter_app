@@ -1,25 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import Main from "./components/Main";
+import RateList from "./components/rates/RatesList";
+import CurrencyConverter from "./components/converter/CurrencyConverter";
+import Header from "./components/Header";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { getCurrentRates } from "./redux/thunk/thunk";
 
-function App() {
+const App = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getCurrentRates());
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Router>
+        {<Header />}
+        <Routes>
+          <Route path="/" element={<Main />} />
+          <Route path="/rates" element={<RateList />} />
+          <Route path="/converter" element={<CurrencyConverter />} />
+        </Routes>
+      </Router>
+    </>
   );
-}
+};
 
 export default App;
